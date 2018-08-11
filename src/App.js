@@ -9,6 +9,7 @@ import 'react-select/dist/react-select.css';
 import UsersCategoryRow from './components/UsersCategoryRow'
 import UsersRow from './components/UsersRow'
 import Footer  from './components/Footer'
+import Header from './components/Header'
 import  _  from 'lodash' ;
 import axios from 'axios';
 
@@ -48,26 +49,6 @@ class App extends Component {
 
 componentDidMount = () => {
 
-  /*axios.get('/user?ID=12345')
-.then(function (response) {
-  console.log(response);
-})
-.catch(function (error) {
-  console.log(error);
-});*/
-
-  /*const bookingHubConnection = new HubConnection('http://localhost:59084/bookingHub');
-
-  this.setState({bookingHubConnection}, () => {
-    this.state.bookingHubConnection.start()
-    .then(() => console.log('SignalR Started'))
-    .catch(err => console.log('Error connecting SignalR - ' + err));
-
-    this.state.bookingHubConnection.on('booking', (message) => {
-      const bookingMessage = message;
-      this.setState({bookingMessage});
-    });
-  });*/
 }
 
 
@@ -128,13 +109,11 @@ componentDidMount = () => {
     const { selectedEncadrant, selectedSubject ,selectedFilterScore } = this.state ;
 
     return (
-      <div className="container">
+      <div>
 
-        <PageHeader>
-        <h2 className="text-center text-primary"> ISAMM-SUMMER-CHALLENGE Leaderboard </h2>
-       </PageHeader>
+       <Header />
 
-
+       <div className="container">
       <Row className="show-grid">
 
         <Col md={3}>
@@ -197,6 +176,7 @@ componentDidMount = () => {
     </div>
 
     <Footer />
+      </div>
       </div>
     );
   }
