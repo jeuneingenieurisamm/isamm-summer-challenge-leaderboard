@@ -8,14 +8,14 @@ class UsersRow extends Component {
         const users = this.props.users.map((el, index) => {
             return (
                 <tr key={index}>
-                    <td>Equipe</td>
+                    <td>Equipe 20</td>
                     <td>Membres</td>
                     <td>Encadrant</td>
                     <td>Sujet</td>
                     <td> </td>
-                    <td>15pt</td>
-                    <td>15pt</td>
-                    <td>20 pt</td>
+                    <td>0pt</td>
+                    <td>0pt</td>
+                    <td>0pt</td>
                     <td><h3><Label>Score Finale </Label> </h3></td>
 
 

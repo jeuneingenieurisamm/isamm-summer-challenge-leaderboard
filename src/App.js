@@ -16,7 +16,7 @@ import axios from 'axios';
 
 const data =[
   {
-    'equipe':"Test",
+    'equipe':"Equipe 20",
     'encadrant':"Test",
     'sujet':"Test",
     'score_communication_encadrant':0,
@@ -139,7 +139,16 @@ componentDidMount = () => {
        options={[
          { value: 'mehrez_essafi', label: 'Mr Mehrez Essafi' },
          { value: 'youssef_ben_hlima', label: 'Mr Youssef ben hlima' },
-         { value: 'youssef_ben_hlima', label: 'Madame Imen Bouziri' },
+
+         { value: 'chawki_ben_fredj', label: 'Mr Chaouki Ben Fredj' },
+         { value: 'ahmed_fougahli', label: 'Mr Ahmed Foughali' },
+         { value: 'nader_debbabi', label: 'Mr Nader DEBBABI' },
+         { value: 'amine_maaroufi', label: 'Mr Maaroufi Mohamed Amine ' },
+
+         { value: 'imen_bouziri', label: 'Madame Imen Bouziri' },
+         { value: 'asma_sayeed', label: 'Madame Asma Saied' },
+         { value: 'sana_ben', label: 'Madame Sana ben Abdallah' },
+         { value: 'ahmed_rebai', label: 'Mr Rebai Ahmed' },
 
 
        ]}
@@ -155,7 +164,14 @@ componentDidMount = () => {
        onChange={this.filterBySujet}
        options={[
          { value: 'mehrez_essafi', label: 'Sujet1' },
-         { value: 'mehrez_essafi', label: 'Sujet2' },
+         { value: 'mehrez_essafi', label: 'Sujet3' },
+         { value: 'mehrez_essafi', label: 'Sujet4' },
+         { value: 'mehrez_essafi', label: 'Sujet5' },
+         { value: 'mehrez_essafi', label: 'Sujet6' },
+         { value: 'mehrez_essafi', label: 'Sujet8' },
+         { value: 'mehrez_essafi', label: 'Sujet9' },
+         { value: 'mehrez_essafi', label: 'Sujet10' },
+         { value: 'mehrez_essafi', label: 'Sujet11' },
 
 
 
