@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "jeuneingenieurisamm.github.io/isamm-summer-challenge-leaderboard",
   "dependencies": {
+    "gh-pages": "^1.2.0",
     "lodash": "^4.17.10",
     "react": "^16.4.0",
     "react-bootstrap": "^0.32.1",
