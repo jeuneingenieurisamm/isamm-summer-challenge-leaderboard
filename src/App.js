@@ -37,13 +37,14 @@ class App extends Component {
      super(props);
      this.state = {
       teams :[],
+      sortedteams :[],
       users :[],
       selectedOption: '',
       selectedTrack: 'Filter By Track',
       selectedLocation: '',
-      selectedFilterScore :'',
-      selectedEncadrant :'',
-      selectedSubject :''
+      selectedFilterScore :{ value: 'random', label: 'Aléatoire' },
+      selectedEncadrant : { value: 'all', label: 'Tous les encadrants' },
+      selectedSubject : { value: 'all', label: 'Tous les sujets' },
      };
    }
 
@@ -73,9 +74,11 @@ class App extends Component {
     var data =[]  
     dbstore.collection("teams").get().then((querySnapshot) => {
      querySnapshot.forEach((doc) => {
-         console.log(`${doc.id} => ${doc.data()}`);
-         data.push( doc.data())  
-         this.setState({teams:data})   
+         doc.data().score_totale += doc.data().score_avancement + 
+         doc.data().score_communication_encadrant + doc.data().score_realisation_tache
+         data.push( doc.data()) 
+         this.setState({teams:data}) 
+         this.setState({sortedteams:data})  
         });//***end ofr each doc  */
  }).catch(function(err){
    console.log(err)
@@ -91,29 +94,52 @@ class App extends Component {
 
      //**** sort teams by score (high-low or low-->high) */
      filterByScore = (selectedFilterScore) => {
+       
         this.setState({ selectedFilterScore });
-        var teams = this.state.teams
-        var sortedTeams = _.orderBy(teams, ['score_totale'],[selectedFilterScore.value]);
-        this.setState({teams:sortedTeams})
+        if(selectedFilterScore.value=='random')
+        {
+          console.log('are us here')
+             this.loadTeams()
+        }else{
+          console.log('slect score' + selectedFilterScore.value)
+          var teams = this.state.teams
+          var sortedTeams = _.orderBy(teams, ['score_totale'],[selectedFilterScore.value]);
+          console.log('sroted teams' + JSON.stringify(sortedTeams))
+          this.setState({sortedteams:sortedTeams})
+        }
+        
       }
 
 
     //**** sort teams by Superviser */
      filterByEncadrant = (selectedEncadrant) => {
       this.setState({ selectedEncadrant });
+      if(selectedEncadrant !=null)
+      {
+        if(selectedEncadrant.value=="all")
+        {  
+        
+          this.loadTeams()
+        }else{
+          var teams = this.state.teams
+          var sortedTeams= _.filter(teams, item => item.encadrant_username === selectedEncadrant.value);
+          this.setState({sortedteams:sortedTeams})
+        }
+      }
+     
     }
 
 
      //**** sort teams by Superviser */
      filterBySujet = (selectedSubject) => {
       this.setState({ selectedSubject });
-      var teams = this.state.teams
       if(selectedSubject.value=="all")
       {  
         this.loadTeams()
       }else{
+        var teams = this.state.teams
         var sortedTeams= _.filter(teams, item => item.sujet === selectedSubject.value);
-        this.setState({teams:sortedTeams})
+        this.setState({sortedteams:sortedTeams})
       }
     }
 
@@ -136,9 +162,8 @@ class App extends Component {
   render() {
     const { selectedLocation } = this.state;
     const { selectedTrack } = this.state;
-    const { users,teams } = this.state;
+    const { users,teams,sortedteams } = this.state;
     const { selectedEncadrant, selectedSubject ,selectedFilterScore } = this.state ;
-    console.log('teams' + teams.length)
 
     return (
       <div>
@@ -158,6 +183,7 @@ class App extends Component {
        options={[
          { value: 'asc', label: 'Min-Max' },
          { value: 'desc', label: 'Max-Min' },
+         { value: 'random', label: 'Aléatoire' },
        ]}
      />
         </Col>
@@ -169,6 +195,7 @@ class App extends Component {
        value={selectedEncadrant}
        onChange={this.filterByEncadrant}
        options={[
+        { value: 'all', label: 'Tous les encadrants' },
          { value: 'mehrez_essafi', label: 'Mr Mehrez Essafi' },
          { value: 'youssef_ben_hlima', label: 'Mr Youssef ben hlima' },
 
@@ -176,9 +203,9 @@ class App extends Component {
          { value: 'ahmed_fougahli', label: 'Mr Ahmed Foughali' },
          { value: 'nader_debbabi', label: 'Mr Nader DEBBABI' },
          { value: 'amine_maaroufi', label: 'Mr Maaroufi Mohamed Amine ' },
+         { value: 'firas_composs', label: 'Mr Mohamed Firas Zribi ' },
 
          { value: 'imen_bouziri', label: 'Madame Imen Bouziri' },
-         { value: 'asma_sayeed', label: 'Madame Asma Saied' },
          { value: 'sana_ben', label: 'Madame Sana ben Abdallah' },
          { value: 'ahmed_rebai', label: 'Mr Rebai Ahmed' },
 
@@ -219,7 +246,7 @@ class App extends Component {
     <div className="text-center">
    <Table responsive>
      <UsersCategoryRow />
-     <UsersRow teams ={teams} />
+     <UsersRow teams ={sortedteams} />
    </Table>
 
     </div>

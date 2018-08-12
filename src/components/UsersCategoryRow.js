@@ -12,9 +12,9 @@ class UsersCategoryRow extends Component {
                 <th className="text-primary"><h5 className="menu-text">Encadrant</h5></th>
                 <th className="text-primary"><h5 className="menu-text">Sujet</h5></th>
                 <th className="text-primary"><h4> </h4></th>
-                <th className="text-primary"><h5 className="menu-text-2"> Communication avec l'encadrant:</h5></th>
-                <th className="text-primary"><h5 className="menu-text-2">Avancement:</h5></th>
-                <th className="text-primary"><h5 className="menu-text-2">Réalisation de la tâche:</h5></th>
+                <th className="text-primary"><h5 className="final-score"> Communication avec l'encadrant:</h5></th>
+                <th className="text-primary"><h5 className="final-score">Avancement:</h5></th>
+                <th className="text-primary"><h5 className="final-score">Réalisation de la tâche:</h5></th>
                 <th className="text-primary"><h4 className="final-score">Score totale:</h4></th>
             </tr>
             </thead>
