@@ -16,7 +16,7 @@ class UsersRow extends Component {
                     <td>{el.score_communication_encadrant}pt</td>
                     <td>{el.score_avancement}pt</td>
                     <td>{el.score_realisation_tache}pt</td>
-                    <td><h3><Label>Score Finale : {el.score_totale} </Label> </h3></td>
+                    <td><h3><Label> {el.score_totale} </Label> </h3></td>
 
 
                 </tr>
