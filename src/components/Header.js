@@ -7,7 +7,7 @@ const Header = () => {
         <Navbar>
         <Navbar.Header>
           <Navbar.Brand>
-            <a href="#home"><img src={Image} height="45" width="120" alt="challenge"/> </a>
+            <a href="#"><span className="navItem">ISAMM SUMMER CHALLENGE Leaderboard </span> </a>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>

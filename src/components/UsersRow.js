@@ -5,18 +5,18 @@ class UsersRow extends Component {
 
 
     render() {
-        const users = this.props.users.map((el, index) => {
+        const users = this.props.teams.map((el, index) => {
             return (
                 <tr key={index}>
-                    <td>Equipe 20</td>
-                    <td>Membres</td>
-                    <td>Encadrant</td>
-                    <td>Sujet</td>
+                    <td>{el.teamName}</td>
+                    <td>{el.membres }</td>
+                    <td>{el.encadrant}</td>
+                    <td>{el.sujet}</td>
                     <td> </td>
-                    <td>0pt</td>
-                    <td>0pt</td>
-                    <td>0pt</td>
-                    <td><h3><Label>Score Finale </Label> </h3></td>
+                    <td>{el.score_communication_encadrant}pt</td>
+                    <td>{el.score_avancement}pt</td>
+                    <td>{el.score_realisation_tache}pt</td>
+                    <td><h3><Label>Score Finale : {el.score_totale} </Label> </h3></td>
 
 
                 </tr>

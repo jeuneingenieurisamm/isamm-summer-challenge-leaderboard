@@ -12,12 +12,14 @@ import Footer  from './components/Footer'
 import Header from './components/Header'
 import  _  from 'lodash' ;
 import axios from 'axios';
+import { database ,dbstore } from './firebase';
 
 
 const data =[
   {
     'equipe':"Equipe 20",
     'encadrant':"Test",
+    'encadrant_username' :'',
     'sujet':"Test",
     'score_communication_encadrant':0,
     'score_avancement':0,
@@ -34,7 +36,8 @@ class App extends Component {
   constructor(props) {
      super(props);
      this.state = {
-      users :data,
+      teams :[],
+      users :[],
       selectedOption: '',
       selectedTrack: 'Filter By Track',
       selectedLocation: '',
@@ -47,31 +50,51 @@ class App extends Component {
 
 
 
-componentDidMount = () => {
+   componentDidMount() {
+       //*** read the data firebase**********//  
+      /* var data =[]  
+     dbstore.collection("teams").get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+          console.log(`${doc.id} => ${doc.data()}`);
+          data.push( doc.data())  
+          this.setState({teams:data})   
+         });//end ofr each doc  
+  }).catch(function(err){
+    console.log(err)
+  })*/
+  this.loadTeams()
 
-}
+    
+  }
 
 
-    filterBylocation = (selectedLocation) => {
-       this.setState({ selectedLocation});
-       if(selectedLocation.value =='all')
-       {
-         console.log('all no filter')
-         this.setState({users:data})
-       }else{
-       const result= _.filter(this.state.users, item => item.location === selectedLocation.value);
-       console.log('resuls of filer list' + JSON.stringify(result))
-       this.setState({users: result})
+  loadTeams()
+  {
+    var data =[]  
+    dbstore.collection("teams").get().then((querySnapshot) => {
+     querySnapshot.forEach((doc) => {
+         console.log(`${doc.id} => ${doc.data()}`);
+         data.push( doc.data())  
+         this.setState({teams:data})   
+        });//***end ofr each doc  */
+ }).catch(function(err){
+   console.log(err)
+ })
 
-          }
 
-     }
+  }
+
+
+    
 
 
 
      //**** sort teams by score (high-low or low-->high) */
      filterByScore = (selectedFilterScore) => {
         this.setState({ selectedFilterScore });
+        var teams = this.state.teams
+        var sortedTeams = _.orderBy(teams, ['score_totale'],[selectedFilterScore.value]);
+        this.setState({teams:sortedTeams})
       }
 
 
@@ -84,6 +107,14 @@ componentDidMount = () => {
      //**** sort teams by Superviser */
      filterBySujet = (selectedSubject) => {
       this.setState({ selectedSubject });
+      var teams = this.state.teams
+      if(selectedSubject.value=="all")
+      {  
+        this.loadTeams()
+      }else{
+        var sortedTeams= _.filter(teams, item => item.sujet === selectedSubject.value);
+        this.setState({teams:sortedTeams})
+      }
     }
 
 
@@ -105,8 +136,9 @@ componentDidMount = () => {
   render() {
     const { selectedLocation } = this.state;
     const { selectedTrack } = this.state;
-    const { users } = this.state;
+    const { users,teams } = this.state;
     const { selectedEncadrant, selectedSubject ,selectedFilterScore } = this.state ;
+    console.log('teams' + teams.length)
 
     return (
       <div>
@@ -124,8 +156,8 @@ componentDidMount = () => {
        value={selectedFilterScore}
        onChange={this.filterByScore}
        options={[
-         { value: 'Min-Max', label: 'Min-Max' },
-         { value: 'Max-Min', label: 'Max-Min' },
+         { value: 'asc', label: 'Min-Max' },
+         { value: 'desc', label: 'Max-Min' },
        ]}
      />
         </Col>
@@ -163,15 +195,16 @@ componentDidMount = () => {
        value={selectedSubject}
        onChange={this.filterBySujet}
        options={[
-         { value: 'mehrez_essafi', label: 'Sujet1' },
-         { value: 'mehrez_essafi', label: 'Sujet3' },
-         { value: 'mehrez_essafi', label: 'Sujet4' },
-         { value: 'mehrez_essafi', label: 'Sujet5' },
-         { value: 'mehrez_essafi', label: 'Sujet6' },
-         { value: 'mehrez_essafi', label: 'Sujet8' },
-         { value: 'mehrez_essafi', label: 'Sujet9' },
-         { value: 'mehrez_essafi', label: 'Sujet10' },
-         { value: 'mehrez_essafi', label: 'Sujet11' },
+        { value: 'all', label: 'Tous les sujets' },
+         { value: 'Sujet1', label: 'Sujet1' },
+         { value: 'Sujet3', label: 'Sujet3' },
+         { value: 'Sujet4', label: 'Sujet4' },
+         { value: 'Sujet5', label: 'Sujet5' },
+         { value: 'Sujet6', label: 'Sujet6' },
+         { value: 'Sujet8', label: 'Sujet8' },
+         { value: 'Sujet9', label: 'Sujet9' },
+         { value: 'Sujet10', label: 'Sujet10' },
+         { value: 'Sujet11', label: 'Sujet11' },
 
 
 
@@ -186,7 +219,7 @@ componentDidMount = () => {
     <div className="text-center">
    <Table responsive>
      <UsersCategoryRow />
-     <UsersRow users ={users} />
+     <UsersRow teams ={teams} />
    </Table>
 
     </div>
