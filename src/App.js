@@ -121,8 +121,18 @@ class App extends Component {
         
           this.loadTeams()
         }else{
-          var teams = this.state.teams
-          var sortedTeams= _.filter(teams, item => item.encadrant_username === selectedEncadrant.value);
+
+          let {teams,selectedSubject} = this.state
+          var sortedTeams=[]
+          if(selectedSubject.value !="all")
+          {
+            console.log('many filter !')
+            sortedTeams= _.filter(teams, item => item.encadrant_username === selectedEncadrant.value
+            && item.sujet === selectedSubject.value);
+          }else{
+            sortedTeams= _.filter(teams, item => item.encadrant_username === selectedEncadrant.value);
+          }
+          //var sortedTeams= _.filter(teams, item => item.encadrant_username === selectedEncadrant.value);
           this.setState({sortedteams:sortedTeams})
         }
       }
@@ -137,8 +147,19 @@ class App extends Component {
       {  
         this.loadTeams()
       }else{
-        var teams = this.state.teams
-        var sortedTeams= _.filter(teams, item => item.sujet === selectedSubject.value);
+        let {teams,selectedEncadrant} = this.state
+        var selectedFilter = this.state.selectedEncadrant
+        var sortedTeams =[]
+        console.log('ss'+ selectedEncadrant.value)
+        if(selectedEncadrant.value !="all")
+        {
+          console.log('we are here multi filter' +selectedEncadrant.value)
+           sortedTeams= _.filter(teams, item => item.sujet === selectedSubject.value
+          && item.encadrant_username === selectedEncadrant.value);
+        }else{
+          sortedTeams= _.filter(teams, item => item.sujet === selectedSubject.value);
+        }
+        
         this.setState({sortedteams:sortedTeams})
       }
     }
