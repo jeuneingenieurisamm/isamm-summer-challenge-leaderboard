@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { Button ,Grid , Row , Col ,Navbar ,PageHeader , Table} from 'react-bootstrap';
-
+import { Row , Col, Table} from 'react-bootstrap';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
-
 import UsersCategoryRow from './components/UsersCategoryRow'
 import UsersRow from './components/UsersRow'
 import Footer  from './components/Footer'
 import Header from './components/Header'
 import  _  from 'lodash' ;
-import axios from 'axios';
-import { database ,dbstore } from './firebase';
+import { dbstore } from './firebase';
 
 
 const data =[
@@ -26,16 +22,14 @@ const data =[
     'score_realisation_tache':0,
     'score_totale':0,
     'membres' :[]
-
-    
   }
 ]
 
 class App extends Component {
 
   constructor(props) {
-     super(props);
-     this.state = {
+    super(props);
+    this.state = {
       teams :[],
       sortedteams :[],
       users :[],
@@ -44,56 +38,33 @@ class App extends Component {
       selectedLocation: '',
       selectedFilterScore :{ value: 'random', label: 'Aléatoire' },
       selectedEncadrant : { value: 'all', label: 'Tous les encadrants' },
-      selectedSubject : { value: 'all', label: 'Tous les sujets' },
-     };
-   }
-
-
-
-
-   componentDidMount() {
-       //*** read the data firebase**********//  
-      /* var data =[]  
-     dbstore.collection("teams").get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-          console.log(`${doc.id} => ${doc.data()}`);
-          data.push( doc.data())  
-          this.setState({teams:data})   
-         });//end ofr each doc  
-  }).catch(function(err){
-    console.log(err)
-  })*/
-  this.loadTeams()
-
-    
+      selectedSubject : { value: 'all', label: 'Tous les sujets' }
+    };
   }
 
 
-  loadTeams()
-  {
+  componentDidMount() {
+    this.loadTeams();
+  }
+
+
+  loadTeams(){
     var data =[]  
-    dbstore.collection("teams").get().then((querySnapshot) => {
-     querySnapshot.forEach((doc) => {
-         doc.data().score_totale += doc.data().score_avancement + 
-         doc.data().score_communication_encadrant + doc.data().score_realisation_tache
-         data.push( doc.data()) 
-         this.setState({teams:data}) 
-         this.setState({sortedteams:data})  
+    dbstore.collection("teams").get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          doc.data().score_totale += doc.data().score_avancement + 
+          doc.data().score_communication_encadrant + doc.data().score_realisation_tache
+          data.push( doc.data()) 
+          this.setState({teams:data}) 
+          this.setState({sortedteams:data})  
         });//***end ofr each doc  */
- }).catch(function(err){
-   console.log(err)
- })
-
-
+      })
+      .catch(function(err){ console.log(err) });
   }
 
-
-    
-
-
-
-     //**** sort teams by score (high-low or low-->high) */
-     filterByScore = (selectedFilterScore) => {
+    //**** sort teams by score (high-low or low-->high) */
+    filterByScore = (selectedFilterScore) => {
        
         this.setState({ selectedFilterScore });
         if(selectedFilterScore.value=='random')
@@ -108,20 +79,17 @@ class App extends Component {
           this.setState({sortedteams:sortedTeams})
         }
         
-      }
+    }
 
 
     //**** sort teams by Superviser */
-     filterByEncadrant = (selectedEncadrant) => {
+    filterByEncadrant = (selectedEncadrant) => {
       this.setState({ selectedEncadrant });
       if(selectedEncadrant !=null)
       {
-        if(selectedEncadrant.value=="all")
-        {  
-        
+        if(selectedEncadrant.value=="all"){  
           this.loadTeams()
         }else{
-
           let {teams,selectedSubject} = this.state
           var sortedTeams=[]
           if(selectedSubject.value !="all")
@@ -136,7 +104,6 @@ class App extends Component {
           this.setState({sortedteams:sortedTeams})
         }
       }
-     
     }
 
 
@@ -181,10 +148,7 @@ class App extends Component {
 
 
   render() {
-    const { selectedLocation } = this.state;
-    const { selectedTrack } = this.state;
-    const { users,teams,sortedteams } = this.state;
-    const { selectedEncadrant, selectedSubject ,selectedFilterScore } = this.state ;
+    const { sortedteams,selectedEncadrant, selectedSubject ,selectedFilterScore } = this.state ;
 
     return (
       <div>
@@ -253,9 +217,6 @@ class App extends Component {
          { value: 'Sujet9', label: 'Sujet9' },
          { value: 'Sujet10', label: 'Sujet10' },
          { value: 'Sujet11', label: 'Sujet11' },
-
-
-
        ]}
      />
         </Col>
